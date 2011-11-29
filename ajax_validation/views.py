@@ -9,7 +9,7 @@ def validate(request, *args, **kwargs):
     form_class = kwargs.pop('form_class')
 
     #this lets us pass in form factories if we're using dynamic forms
-    if callable(form_class) and not issubclass(form_class, (forms.Form, forms.ModelForm)):
+    if callable(form_class) and not issubclass(type(form_class), (forms.Form, forms.ModelForm)):
         extra_class_args_func = kwargs.pop('class_callback', lambda request, *args, **kwargs: {}) 
         class_kwargs = extra_class_args_func(request, *args, **kwargs)
         form_class = form_class(**class_kwargs)
