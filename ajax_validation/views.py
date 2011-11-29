@@ -7,6 +7,11 @@ from ajax_validation.utils import LazyEncoder
 
 def validate(request, *args, **kwargs):
     form_class = kwargs.pop('form_class')
+
+    extra_class_args_func = kwargs.pop('class_callback', lambda request, *args, **kwargs: {}) 
+    class_kwargs = extra_class_args_func(request, *args, **kwargs)
+    form_class = form_class(**class_kwargs) if callable(form_class) else form_class
+
     defaults = {
         'data': request.POST
     }
